@@ -3,6 +3,8 @@ package room
 import (
 	"context"
 	"database/sql"
+	"errors"
+	"fmt"
 
 	"github.com/xonoxc/iview/apps/api/internal/domain"
 )
@@ -11,6 +13,8 @@ type RoomRepo interface {
 	Create(ctx context.Context, room *domain.Room) error
 	FindByID(ctx context.Context, id string) (*domain.Room, error)
 }
+
+var ErrRoomNotFound = errors.New("room not found")
 
 type PostgresRoomRepo struct {
 	db *sql.DB
@@ -22,10 +26,47 @@ func NewRoomRepo(db *sql.DB) *PostgresRoomRepo {
 	}
 }
 
-func (repo *PostgresRoomRepo) Create() error {
+func (repo *PostgresRoomRepo) Create(ctx context.Context, room *domain.Room) error {
+	sql := `
+	  INSERT INTO rooms (id, status)
+	  VALUES ($1, $2)
+	  RETURNING created_at
+	`
+
+	err := repo.db.QueryRowContext(
+		ctx, sql,
+		room.ID,
+		room.Status,
+	).Scan(&room.CreatedAt)
+	if err != nil {
+		return fmt.Errorf("create room: %w", err)
+	}
+
 	return nil
 }
 
 func (repo *PostgresRoomRepo) FindByID(ctx context.Context, id string) (*domain.Room, error) {
-	return &domain.Room{}, nil
+	query := `
+	    SELECT id, status, created_at
+		FROM rooms
+		WHERE id = $1
+	`
+
+	var room domain.Room
+
+	err := repo.db.QueryRowContext(ctx, query, id).Scan(
+		&room.ID,
+		&room.Status,
+		&room.CreatedAt,
+	)
+
+	if errors.Is(err, sql.ErrNoRows) {
+		return nil, ErrRoomNotFound
+	}
+
+	if err != nil {
+		return nil, fmt.Errorf("find room: %w", err)
+	}
+
+	return &room, nil
 }
