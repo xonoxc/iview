@@ -13,8 +13,9 @@ type Server struct {
 	port string
 }
 
-func New(port string) *Server {
+func New(db *sql.DB, port string) *Server {
 	return &Server{
+		db:   db,
 		port: port,
 	}
 }
