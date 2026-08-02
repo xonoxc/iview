@@ -2,7 +2,11 @@ COMPOSE := docker compose
 DEV := -f docker-compose.yml -f docker-compose.dev.yml
 PROD := -f docker-compose.yml -f docker-compose.prod.yml
 
-.PHONY: dev dev-build prod prod-build down clean logs ps
+MIGRATIONS := ./apps/api/migrations
+DB_URL := postgres://iview:iview@localhost:5432/iview?sslmode=disable
+
+.PHONY: dev dev-build prod prod-build down clean logs ps \
+        migration migrate-up migrate-down migrate-status
 
 # Development
 dev:
@@ -28,6 +32,18 @@ logs:
 ps:
 	$(COMPOSE) $(DEV) ps
 
-# Remove containers + volumes
 clean:
 	$(COMPOSE) $(DEV) down -v --remove-orphans
+
+# Migrations
+migration:
+	goose -dir $(MIGRATIONS) create $(name) sql
+
+migrate-up:
+	goose -dir $(MIGRATIONS) postgres "$(DB_URL)" up
+
+migrate-down:
+	goose -dir $(MIGRATIONS) postgres "$(DB_URL)" down
+
+migrate-status:
+	goose -dir $(MIGRATIONS) postgres "$(DB_URL)" status
