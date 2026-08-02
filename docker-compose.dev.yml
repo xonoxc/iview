@@ -1,10 +1,21 @@
 services:
+  postgres:
+    ports:
+      - "5432:5432"
+
   api:
     build:
       dockerfile: Dockerfile.dev
+    ports:
+      - "8080:8080"
     volumes:
       - ./apps/api:/app
 
   web:
     build:
-      dockerfile: Dockerfile.dev
+      context: .
+      dockerfile: apps/web/Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./apps/web:/app/apps/web

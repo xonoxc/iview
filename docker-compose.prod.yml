@@ -2,7 +2,12 @@ services:
   api:
     build:
       dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
 
   web:
     build:
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/web/Dockerfile
+    ports:
+      - "3000:80"
