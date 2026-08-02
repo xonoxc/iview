@@ -31,7 +31,9 @@ func main() {
 		log.Fatalf("failed to connect to database: %v", err)
 	}
 
-	s := server.New(cfg.Port)
+	log.Println("database:=>", cfg.DatabaseURL, "connected")
+
+	s := server.New(db, cfg.Port)
 
 	log.Println("server is running on:", cfg.Port)
 
