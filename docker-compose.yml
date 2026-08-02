@@ -1,0 +1,8 @@
+services:
+  api:
+    build:
+      context: ./apps/api
+
+  web:
+    build:
+      context: ./apps/web

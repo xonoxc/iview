@@ -1,0 +1,10 @@
+services:
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./apps/api:/app
+
+  web:
+    build:
+      dockerfile: Dockerfile.dev

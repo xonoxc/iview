@@ -1,0 +1,8 @@
+services:
+  api:
+    build:
+      dockerfile: Dockerfile
+
+  web:
+    build:
+      dockerfile: Dockerfile
