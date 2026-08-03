@@ -1,0 +1,30 @@
+package router
+
+import (
+	"net/http"
+
+	"github.com/xonoxc/iview/apps/api/internal/handlers"
+)
+
+type Handlers struct {
+	RoomHandler *handlers.RoomHandler
+}
+
+type Router struct {
+	handlers Handlers
+}
+
+func NewRouter(h Handlers) *Router {
+	return &Router{
+		handlers: h,
+	}
+}
+
+func (r *Router) SetupRoutes() http.Handler {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("POST /rooms", r.handlers.RoomHandler.HandleCreateRoom)
+	mux.HandleFunc("GET /rooms/{id}", r.handlers.RoomHandler.HandleGetRoom)
+
+	return mux
+}

@@ -17,12 +17,12 @@ func NewRoomService(repo room.RoomRepo) *RoomService {
 	}
 }
 
-func (s *RoomService) CreateRoom(ctx context.Context, room *domain.Room) error {
+func (s *RoomService) CreateRoom(ctx context.Context, room *domain.Room) (string, error) {
 	if err := s.repo.Create(ctx, room); err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
+	return room.ID, nil
 }
 
 func (s *RoomService) GetRoomByID(ctx context.Context, id string) (*domain.Room, error) {

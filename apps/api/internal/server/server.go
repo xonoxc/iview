@@ -2,28 +2,31 @@ package server
 
 import (
 	"context"
-	"database/sql"
 	"errors"
 	"net/http"
 	"time"
+
+	"github.com/xonoxc/iview/apps/api/internal/router"
 )
 
 type Server struct {
-	db   *sql.DB
-	port string
+	router *router.Router
+	port   string
 }
 
-func New(db *sql.DB, port string) *Server {
+func New(rou *router.Router, port string) *Server {
 	return &Server{
-		db:   db,
-		port: port,
+		router: rou,
+		port:   port,
 	}
 }
 
 func (s *Server) Start(ctx context.Context) error {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", handleRoot)
+	mux.Handle("/api/v1/",
+		http.StripPrefix("/api/v1/", s.router.SetupRoutes()),
+	)
 
 	server := &http.Server{
 		Addr:    s.port,
@@ -33,7 +36,7 @@ func (s *Server) Start(ctx context.Context) error {
 	go func() {
 		<-ctx.Done()
 
-		shutdownCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 
 		server.Shutdown(shutdownCtx)
@@ -46,8 +49,4 @@ func (s *Server) Start(ctx context.Context) error {
 	}
 
 	return err
-}
-
-func handleRoot(w http.ResponseWriter, _ *http.Request) {
-	w.Write([]byte("hello\n"))
 }

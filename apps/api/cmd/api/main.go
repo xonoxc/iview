@@ -2,42 +2,26 @@ package main
 
 import (
 	"context"
-	"database/sql"
 	"log"
 	"os/signal"
 	"syscall"
-
-	_ "github.com/jackc/pgx/v5/stdlib"
-
-	"github.com/xonoxc/iview/apps/api/internal/config"
-	"github.com/xonoxc/iview/apps/api/internal/server"
 )
 
 func main() {
-	cfg, err := config.Load()
-	if err != nil {
-		log.Fatalf("failed to load api config: %v", err)
-	}
-
-	sigCtx, cancel := signal.NotifyContext(
+	ctx, cancel := signal.NotifyContext(
 		context.Background(),
 		syscall.SIGINT,
-		syscall.SIGKILL,
+		syscall.SIGTERM,
 	)
 	defer cancel()
 
-	db, err := sql.Open("pgx", cfg.DatabaseURL)
+	app, err := NewApp(ctx)
 	if err != nil {
-		log.Fatalf("failed to connect to database: %v", err)
+		log.Fatal(err)
 	}
+	defer app.Close()
 
-	log.Println("database:=>", cfg.DatabaseURL, "connected")
-
-	s := server.New(db, cfg.Port)
-
-	log.Println("server is running on:", cfg.Port)
-
-	if err := s.Start(sigCtx); err != nil {
-		log.Printf("server error: %v", err)
+	if err := app.Run(ctx); err != nil {
+		log.Fatal(err)
 	}
 }
