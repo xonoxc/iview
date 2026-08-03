@@ -7,8 +7,11 @@ CREATE TYPE room_status AS ENUM (
 );
 
 
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
 CREATE TABLE rooms (
-    id UUID PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    status room_status NOT NULL DEFAULT 'waiting',
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 

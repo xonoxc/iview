@@ -27,17 +27,16 @@ func NewRoomRepo(db *sql.DB) *PostgresRoomRepo {
 }
 
 func (repo *PostgresRoomRepo) Create(ctx context.Context, room *domain.Room) error {
-	sql := `
-	  INSERT INTO rooms (id, status)
-	  VALUES ($1, $2)
-	  RETURNING created_at
+	query := `
+		INSERT INTO rooms DEFAULT VALUES
+		RETURNING id, status, created_at
 	`
 
-	err := repo.db.QueryRowContext(
-		ctx, sql,
-		room.ID,
-		room.Status,
-	).Scan(&room.CreatedAt)
+	err := repo.db.QueryRowContext(ctx, query).Scan(
+		&room.ID,
+		&room.Status,
+		&room.CreatedAt,
+	)
 	if err != nil {
 		return fmt.Errorf("create room: %w", err)
 	}
