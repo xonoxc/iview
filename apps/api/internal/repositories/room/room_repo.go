@@ -12,6 +12,8 @@ import (
 type RoomRepo interface {
 	Create(ctx context.Context, room *domain.Room) error
 	FindByID(ctx context.Context, id string) (*domain.Room, error)
+
+	UpdateStatus(ctx context.Context, id string, status domain.RoomStatus) error
 }
 
 var ErrRoomNotFound = errors.New("room not found")
@@ -28,12 +30,14 @@ func NewRoomRepo(db *sql.DB) *PostgresRoomRepo {
 
 func (repo *PostgresRoomRepo) Create(ctx context.Context, room *domain.Room) error {
 	query := `
-		INSERT INTO rooms DEFAULT VALUES
-		RETURNING id, status, created_at
+		INSERT INTO rooms (title) 
+		VALUES ($1)
+		RETURNING id, title, status, created_at
 	`
 
-	err := repo.db.QueryRowContext(ctx, query).Scan(
+	err := repo.db.QueryRowContext(ctx, query, room.Title).Scan(
 		&room.ID,
+		&room.Title,
 		&room.Status,
 		&room.CreatedAt,
 	)
@@ -46,7 +50,7 @@ func (repo *PostgresRoomRepo) Create(ctx context.Context, room *domain.Room) err
 
 func (repo *PostgresRoomRepo) FindByID(ctx context.Context, id string) (*domain.Room, error) {
 	query := `
-	    SELECT id, status, created_at
+	    SELECT id, title, status, created_at
 		FROM rooms
 		WHERE id = $1
 	`
@@ -55,6 +59,7 @@ func (repo *PostgresRoomRepo) FindByID(ctx context.Context, id string) (*domain.
 
 	err := repo.db.QueryRowContext(ctx, query, id).Scan(
 		&room.ID,
+		&room.Title,
 		&room.Status,
 		&room.CreatedAt,
 	)
@@ -68,4 +73,28 @@ func (repo *PostgresRoomRepo) FindByID(ctx context.Context, id string) (*domain.
 	}
 
 	return &room, nil
+}
+
+func (repo *PostgresRoomRepo) UpdateStatus(ctx context.Context, id string, status domain.RoomStatus) error {
+	query := `
+		UPDATE rooms
+		SET status = $1
+		WHERE id = $2
+	`
+
+	res, err := repo.db.ExecContext(ctx, query, status, id)
+	if err != nil {
+		return fmt.Errorf("update room status: %w", err)
+	}
+
+	rows, err := res.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("get affected rows: %w", err)
+	}
+
+	if rows == 0 {
+		return ErrRoomNotFound
+	}
+
+	return nil
 }

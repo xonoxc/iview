@@ -13,5 +13,6 @@ const (
 type Room struct {
 	ID        string
 	Status    RoomStatus
+	Title     string
 	CreatedAt time.Time
 }
