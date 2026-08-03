@@ -46,11 +46,11 @@ make dev
 
 This builds and runs all services via Docker Compose:
 
-| Service   | URL                    | Notes                              |
-| --------- | ---------------------- | ---------------------------------- |
-| web       | http://localhost:3000  | Next.js dev server (hot reload)    |
-| api       | http://localhost:8080  | Go API (air hot reload)            |
-| postgres  | localhost:5432         | `iview` / `iview` / `iview`        |
+| Service  | URL                   | Notes                           |
+| -------- | --------------------- | ------------------------------- |
+| web      | http://localhost:3000 | Next.js dev server (hot reload) |
+| api      | http://localhost:8080 | Go API (air hot reload)         |
+| postgres | localhost:5432        | `iview` / `iview` / `iview`     |
 
 Rebuild images after dependency changes with `make dev-build`.
 
