@@ -1,159 +1,98 @@
-# Turborepo starter
+# iview
 
-This Turborepo starter is maintained by the Turborepo core team.
+A monorepo for the iview project: a Go API, a Next.js web app, and shared TypeScript packages, orchestrated with pnpm, Turborepo, and Docker Compose.
 
-## Using this example
+## Stack
 
-Run the following command:
+- **Web** — [Next.js 16](https://nextjs.org/) (React 19, Turbopack) app
+- **API** — [Go](https://go.dev/) 1.26 HTTP server (stdlib `net/http` router) with a [pgx](https://github.com/jackc/pgx) PostgreSQL driver
+- **DB** — PostgreSQL 17
+- **Tooling** — [pnpm](https://pnpm.io/) + [Turborepo](https://turborepo.dev/) workspaces, [Docker Compose](https://docs.docker.com/compose/) for local/prod environments, [goose](https://pressly.github.io/goose/) for migrations, [air](https://github.com/air-verse/air) for API hot reload
 
-```sh
-npx create-turbo@latest
+## Repository layout
+
+```
+apps/
+  api/             # Go API service
+    cmd/api/       # entrypoint (main.go, app.go)
+    internal/
+      config/      # env config loading
+      database/    # pgx/postgres connection
+      domain/      # domain models
+      repositories/# data access
+      services/    # business logic
+      handlers/    # HTTP handlers
+      router/      # route registration
+      server/      # HTTP server
+    migrations/    # goose SQL migrations
+  web/             # Next.js app
+packages/
+  ui/              # @repo/ui — shared React components
+  eslint-config/   # @repo/eslint-config — shared ESLint configs
+  typescript-config/# @repo/typescript-config — shared tsconfigs
 ```
 
-## What's inside?
+## Prerequisites
 
-This Turborepo includes the following packages/apps:
+- Docker + Docker Compose
+- Go 1.26+ (to run the API outside Docker or use the Makefile migration targets)
+- [goose](https://pressly.github.io/goose/installation) (for the `migration`/`migrate-*` Makefile targets)
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+## Getting started
 
 ```sh
-cd my-turborepo
-turbo build
+make dev
 ```
 
-Without global `turbo`, use your package manager:
+This builds and runs all services via Docker Compose:
+
+| Service   | URL                    | Notes                              |
+| --------- | ---------------------- | ---------------------------------- |
+| web       | http://localhost:3000  | Next.js dev server (hot reload)    |
+| api       | http://localhost:8080  | Go API (air hot reload)            |
+| postgres  | localhost:5432         | `iview` / `iview` / `iview`        |
+
+Rebuild images after dependency changes with `make dev-build`.
+
+## API
+
+Routes (see `apps/api/internal/router/router.go`):
+
+- `POST /rooms` — create a room
+- `GET /rooms/{id}` — get a room by ID
+
+Configuration is read from the environment (see `apps/api/.env.sample`):
+
+- `DATABASE_URL` (required) — e.g. `postgres://iview:iview@postgres:5432/iview?sslmode=disable`
+- `API_PORT` — e.g. `:8080` (defaults to `:8080`)
+
+## Migrations
+
+Migrations live in `apps/api/migrations` and run against `localhost:5432` by default.
 
 ```sh
-cd my-turborepo
-npx turbo build
-pnpm dlx turbo build
-pnpm exec turbo build
+make migration name=create_rooms   # create a new migration file
+make migrate-up                    # apply all pending migrations
+make migrate-down                  # roll back the last migration
+make migrate-status                # show migration status
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+## Useful commands
 
 ```sh
-turbo build --filter=docs
+make dev          # start dev stack (foreground)
+make dev-build    # start dev stack, rebuilding images
+make prod         # start production stack (detached)
+make prod-build   # start production stack, rebuilding images
+make down         # stop dev stack
+make clean        # stop dev stack and remove volumes
+make logs         # tail dev logs
+make ps           # list dev services
 ```
 
-Without global `turbo`:
+Run task commands (build/lint/typecheck) per package with turbo:
 
 ```sh
-npx turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+pnpm build            # turbo run build
+pnpm --filter web dev # dev only the web app on the host
 ```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo dev
-pnpm exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-pnpm exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-pnpm exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
