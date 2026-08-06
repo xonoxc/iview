@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log"
+	"log/slog"
 
 	"github.com/xonoxc/iview/apps/api/internal/config"
 	"github.com/xonoxc/iview/apps/api/internal/database"
@@ -50,7 +50,7 @@ func NewApp(ctx context.Context) (*App, error) {
 }
 
 func (a *App) Run(ctx context.Context) error {
-	log.Printf("iview API listening on %s", a.port)
+	slog.Info("API listening", "port", a.port)
 	return a.server.Start(ctx)
 }
 

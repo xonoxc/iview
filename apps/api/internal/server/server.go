@@ -24,7 +24,7 @@ func New(rou *router.Router, port string) *Server {
 func (s *Server) Start(ctx context.Context) error {
 	server := &http.Server{
 		Addr:    s.port,
-		Handler: withCORS(s.router.SetupRoutes()),
+		Handler: withRequestLogging(withCORS(s.router.SetupRoutes())),
 	}
 
 	go func() {

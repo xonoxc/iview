@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log"
+	"log/slog"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
@@ -20,7 +20,7 @@ func Connect(ctx context.Context, url string) (*sql.DB, error) {
 		return nil, fmt.Errorf("ping database: %w", err)
 	}
 
-	log.Println("database:=>", url, "connected")
+	slog.Info("database connected", "url", url)
 
 	return db, nil
 }
