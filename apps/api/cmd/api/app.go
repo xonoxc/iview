@@ -9,6 +9,7 @@ import (
 	"github.com/xonoxc/iview/apps/api/internal/config"
 	"github.com/xonoxc/iview/apps/api/internal/database"
 	"github.com/xonoxc/iview/apps/api/internal/handlers"
+	"github.com/xonoxc/iview/apps/api/internal/realtime"
 	"github.com/xonoxc/iview/apps/api/internal/repositories/room"
 	"github.com/xonoxc/iview/apps/api/internal/router"
 	"github.com/xonoxc/iview/apps/api/internal/server"
@@ -34,11 +35,20 @@ func NewApp(ctx context.Context) (*App, error) {
 
 	roomRepo := room.NewRoomRepo(db)
 	roomService := services.NewRoomService(roomRepo)
+
 	roomHandler := handlers.NewRoomHandler(*roomService)
 
-	rt := router.NewRouter(router.Handlers{
-		RoomHandler: roomHandler,
-	})
+	hub := realtime.NewHub()
+	wsHandler := handlers.NewRealtimeHandler(
+		hub,
+		*roomService,
+	)
+
+	rt := router.NewRouter(
+		router.Handlers{
+			RoomHandler:     roomHandler,
+			RealtimeHandler: wsHandler,
+		})
 
 	s := server.New(rt, cfg.Port)
 

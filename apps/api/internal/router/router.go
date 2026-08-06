@@ -7,7 +7,8 @@ import (
 )
 
 type Handlers struct {
-	RoomHandler *handlers.RoomHandler
+	RoomHandler     *handlers.RoomHandler
+	RealtimeHandler *handlers.RealtimeHandler
 }
 
 type Router struct {
@@ -25,6 +26,11 @@ func (r *Router) SetupRoutes() http.Handler {
 
 	mux.HandleFunc("POST /api/v1/rooms", r.handlers.RoomHandler.HandleCreateRoom)
 	mux.HandleFunc("GET /api/v1/rooms/{id}", r.handlers.RoomHandler.HandleGetRoom)
+
+	mux.HandleFunc(
+		"GET /rooms/{id}/ws",
+		r.handlers.RealtimeHandler.HandleConnect,
+	)
 
 	return mux
 }
