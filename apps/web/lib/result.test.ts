@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { attempt, attemptSync } from "@/lib/result"
+import { attempt, attemptSync, unwrap } from "@/lib/result"
 
 describe("attempt", () => {
    it("resolves a fulfilled promise to an ok result", async () => {
@@ -34,5 +34,16 @@ describe("attemptSync", () => {
 
       expect(result.isErr()).toBe(true)
       if (result.isErr()) expect(result.error).toBe(boom)
+   })
+})
+
+describe("unwrap", () => {
+   it("resolves with the value of an ok result", async () => {
+      await expect(unwrap(attempt(Promise.resolve(42)))).resolves.toBe(42)
+   })
+
+   it("throws the error of an err result", async () => {
+      const boom = new Error("boom")
+      await expect(unwrap(attempt(Promise.reject(boom)))).rejects.toBe(boom)
    })
 })

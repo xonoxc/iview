@@ -16,10 +16,17 @@ COPY apps/web ./apps/web
 RUN pnpm --filter web build
 
 # runtime
-FROM nginx:alpine
+FROM node:24-alpine
 
-COPY --from=builder /app/apps/web/out /usr/share/nginx/html
+ENV NODE_ENV=production
 
-EXPOSE 80
+WORKDIR /app
 
-CMD ["nginx", "-g", "daemon off;"]
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/packages ./packages
+COPY --from=builder /app/apps/web ./apps/web
+
+EXPOSE 3000
+
+CMD ["pnpm", "--filter", "web", "start"]

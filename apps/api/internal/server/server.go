@@ -22,15 +22,9 @@ func New(rou *router.Router, port string) *Server {
 }
 
 func (s *Server) Start(ctx context.Context) error {
-	mux := http.NewServeMux()
-
-	mux.Handle("/api/v1/",
-		http.StripPrefix("/api/v1/", s.router.SetupRoutes()),
-	)
-
 	server := &http.Server{
 		Addr:    s.port,
-		Handler: mux,
+		Handler: withCORS(s.router.SetupRoutes()),
 	}
 
 	go func() {

@@ -23,8 +23,8 @@ func NewRouter(h Handlers) *Router {
 func (r *Router) SetupRoutes() http.Handler {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("POST /rooms", r.handlers.RoomHandler.HandleCreateRoom)
-	mux.HandleFunc("GET /rooms/{id}", r.handlers.RoomHandler.HandleGetRoom)
+	mux.HandleFunc("POST /api/v1/rooms", r.handlers.RoomHandler.HandleCreateRoom)
+	mux.HandleFunc("GET /api/v1/rooms/{id}", r.handlers.RoomHandler.HandleGetRoom)
 
 	return mux
 }
