@@ -21,7 +21,7 @@ export function TerminalPanel() {
 
    return (
       <div className="flex h-full min-h-0 flex-col bg-background">
-         <div className="flex h-[34px] shrink-0 items-center justify-between border-b border-border bg-surface pr-1.5">
+         <div className="flex h-8.5 shrink-0 items-center justify-between border-b border-border bg-surface pr-1.5">
             <Tabs defaultValue="terminal" className="gap-0 pl-1.5">
                <TabsList>
                   <TabsTrigger value="terminal">Terminal</TabsTrigger>

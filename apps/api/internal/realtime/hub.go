@@ -16,6 +16,18 @@ func NewHub() *Hub {
 	}
 }
 
+func (hub *Hub) SendTo(roomId, clientId string, msg Message) bool {
+	hub.mu.RLock()
+	defer hub.mu.RUnlock()
+
+	session, exists := hub.sessions[roomId]
+	if !exists {
+		return false
+	}
+
+	return session.SendTo(clientId, msg)
+}
+
 func (hub *Hub) Register(client *Client) {
 	hub.mu.Lock()
 	defer hub.mu.Unlock()
@@ -46,7 +58,7 @@ func (hub *Hub) Unregister(client *Client) {
 	}
 }
 
-func (hub *Hub) BroadCast(roomId string, msg []byte) {
+func (hub *Hub) BroadCast(roomId string, msg Message) {
 	hub.mu.RLock()
 	defer hub.mu.RUnlock()
 
