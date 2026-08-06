@@ -6,7 +6,8 @@ MIGRATIONS := ./apps/api/migrations
 DB_URL := postgres://iview:iview@localhost:5432/iview?sslmode=disable
 
 .PHONY: dev dev-build prod prod-build down clean logs ps \
-        migration migrate-up migrate-down migrate-status
+        migration migrate-up migrate-down migrate-status \
+        test test-api test-web
 
 # Development
 dev:
@@ -47,3 +48,13 @@ migrate-down:
 
 migrate-status:
 	goose -dir $(MIGRATIONS) postgres "$(DB_URL)" status
+
+# Tests
+test:
+	$(MAKE) -j2 test-api test-web
+
+test-api:
+	cd apps/api && go test -race -v ./...
+
+test-web:
+	cd apps/web && pnpm test
