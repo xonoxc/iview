@@ -33,13 +33,17 @@ describe("useEnterRoom", () => {
    })
 
    it("surfaces a request error when the room cannot be fetched", async () => {
-      getRoomMock.mockResolvedValue(err({ type: "http", status: 404, message: "room not found" }))
+      getRoomMock.mockResolvedValue(
+         err({ type: "http", status: 404, message: "room not found" })
+      )
 
       const queryClient = createQueryClient()
       const { result } = renderHook(() => useEnterRoom(room.id), {
          wrapper: createWrapper(queryClient),
       })
 
-      await waitFor(() => expect(result.current.error).toMatchObject({ type: "http", status: 404 }))
+      await waitFor(() =>
+         expect(result.current.error).toMatchObject({ type: "http", status: 404 })
+      )
    })
 })

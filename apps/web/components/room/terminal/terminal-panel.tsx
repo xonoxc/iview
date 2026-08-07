@@ -44,7 +44,9 @@ export function TerminalPanel() {
                      )}
                   </Button>
                </TooltipTrigger>
-               <TooltipContent side="top">{collapsed ? "Expand" : "Collapse"}</TooltipContent>
+               <TooltipContent side="top">
+                  {collapsed ? "Expand" : "Collapse"}
+               </TooltipContent>
             </Tooltip>
          </div>
 

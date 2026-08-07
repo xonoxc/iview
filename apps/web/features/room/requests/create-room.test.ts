@@ -47,7 +47,11 @@ describe("createRoom", () => {
    it("returns an http error on a non-ok response", async () => {
       vi.stubGlobal(
          "fetch",
-         vi.fn().mockResolvedValue(jsonResponse({ success: false, error: "invalid request" }, 400))
+         vi
+            .fn()
+            .mockResolvedValue(
+               jsonResponse({ success: false, error: "invalid request" }, 400)
+            )
       )
 
       const result = await createRoom({ title: "Pair Programming" })
@@ -65,7 +69,9 @@ describe("createRoom", () => {
    it("returns a malformed error when data has an unexpected shape", async () => {
       vi.stubGlobal(
          "fetch",
-         vi.fn().mockResolvedValue(jsonResponse({ success: true, data: { nope: 1 } }, 201))
+         vi
+            .fn()
+            .mockResolvedValue(jsonResponse({ success: true, data: { nope: 1 } }, 201))
       )
 
       const result = await createRoom({ title: "Pair Programming" })

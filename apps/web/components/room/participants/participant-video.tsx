@@ -51,7 +51,9 @@ export function ParticipantVideo({
                {isSpeaking && (
                   <IconCircleFilled className="size-1.5 shrink-0 fill-live text-live" />
                )}
-               <span className="truncate text-[11px] font-medium text-white/90">{name}</span>
+               <span className="truncate text-[11px] font-medium text-white/90">
+                  {name}
+               </span>
             </span>
             <span className="flex shrink-0 items-center gap-1.5">
                {micOn ? (

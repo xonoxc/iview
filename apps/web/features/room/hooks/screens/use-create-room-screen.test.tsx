@@ -48,7 +48,10 @@ describe("useCreateRoomScreen", () => {
    })
 
    it("creates the room and navigates on success", async () => {
-      mutation.mutateAsync.mockResolvedValue({ room_id: "room-1", message: "room created" })
+      mutation.mutateAsync.mockResolvedValue({
+         room_id: "room-1",
+         message: "room created",
+      })
       const { result } = renderHook(() => useCreateRoomScreen())
 
       await act(async () => {

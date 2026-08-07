@@ -57,7 +57,10 @@ async function request(path: string, init?: RequestInit): Promise<unknown> {
       throw {
          type: "http",
          status: response.status,
-         message: typeof apiResponse?.error === "string" ? apiResponse.error : response.statusText,
+         message:
+            typeof apiResponse?.error === "string"
+               ? apiResponse.error
+               : response.statusText,
       } satisfies RequestError
    }
 
@@ -72,7 +75,10 @@ async function request(path: string, init?: RequestInit): Promise<unknown> {
    return apiResponse.data
 }
 
-export function requestJson(path: string, init?: RequestInit): ResultAsync<unknown, RequestError> {
+export function requestJson(
+   path: string,
+   init?: RequestInit
+): ResultAsync<unknown, RequestError> {
    return attempt<unknown, RequestError>(request(path, init))
 }
 

@@ -49,6 +49,8 @@ describe("useCreateRoom", () => {
          })
       })
 
-      await waitFor(() => expect(result.current.error).toMatchObject({ type: "http", status: 400 }))
+      await waitFor(() =>
+         expect(result.current.error).toMatchObject({ type: "http", status: 400 })
+      )
    })
 })

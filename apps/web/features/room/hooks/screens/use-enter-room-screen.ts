@@ -5,8 +5,11 @@ import { useForm } from "react-hook-form"
 
 import { requestErrorMessage } from "@/features/room/errors"
 import { roomQueryOptions } from "@/features/room/queries/room.queries"
-import { enterRoomSchema, type EnterRoomFormValues } from "@/features/room/schemas/room.schema"
-import type { Room } from "@/features/room/types"
+import {
+   enterRoomSchema,
+   type EnterRoomFormValues,
+} from "@/features/room/schemas/room.schema"
+import type { Room } from "@/features/room/types/room-types"
 import type { RequestError } from "@/lib/http"
 
 function isRoomNotFound(error: RequestError): boolean {
@@ -19,7 +22,9 @@ export function useEnterRoomScreen() {
 
    const form = useForm<EnterRoomFormValues>({
       resolver: zodResolver(enterRoomSchema),
-      defaultValues: { roomId: "" },
+      defaultValues: {
+         roomId: "",
+      },
    })
 
    const verifyRoom = useMutation<Room, RequestError, string>({

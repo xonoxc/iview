@@ -24,7 +24,9 @@ export function isRoom(value: unknown): value is Room {
    if (!isRecord(value)) return false
    return (
       typeof value.id === "string" &&
-      (value.status === "waiting" || value.status === "active" || value.status === "ended") &&
+      (value.status === "waiting" ||
+         value.status === "active" ||
+         value.status === "ended") &&
       typeof value.title === "string" &&
       typeof value.created_at === "string"
    )

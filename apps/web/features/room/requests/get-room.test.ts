@@ -28,7 +28,9 @@ afterEach(() => {
 
 describe("getRoom", () => {
    it("GETs the room and resolves with the room", async () => {
-      const fetchMock = vi.fn().mockResolvedValue(jsonResponse({ success: true, data: room }))
+      const fetchMock = vi
+         .fn()
+         .mockResolvedValue(jsonResponse({ success: true, data: room }))
       vi.stubGlobal("fetch", fetchMock)
 
       const result = await getRoom("room-1")
@@ -39,18 +41,27 @@ describe("getRoom", () => {
    })
 
    it("URL-encodes the room id", async () => {
-      const fetchMock = vi.fn().mockResolvedValue(jsonResponse({ success: true, data: room }))
+      const fetchMock = vi
+         .fn()
+         .mockResolvedValue(jsonResponse({ success: true, data: room }))
       vi.stubGlobal("fetch", fetchMock)
 
       await getRoom("a/b?c=d")
 
-      expect(fetchMock).toHaveBeenCalledWith(`${API_URL}/api/v1/rooms/a%2Fb%3Fc%3Dd`, undefined)
+      expect(fetchMock).toHaveBeenCalledWith(
+         `${API_URL}/api/v1/rooms/a%2Fb%3Fc%3Dd`,
+         undefined
+      )
    })
 
    it("returns an http error for a missing room", async () => {
       vi.stubGlobal(
          "fetch",
-         vi.fn().mockResolvedValue(jsonResponse({ success: false, error: "room not found" }, 404))
+         vi
+            .fn()
+            .mockResolvedValue(
+               jsonResponse({ success: false, error: "room not found" }, 404)
+            )
       )
 
       const result = await getRoom("missing")

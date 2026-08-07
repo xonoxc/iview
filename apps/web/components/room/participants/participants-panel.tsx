@@ -16,9 +16,13 @@ export function ParticipantsPanel() {
    return (
       <div className="flex h-full min-h-0 flex-col bg-background">
          <div className="flex h-9 shrink-0 items-center justify-between border-b border-border px-3">
-            <span className="text-[12px] font-medium text-muted-foreground">Participants</span>
+            <span className="text-[12px] font-medium text-muted-foreground">
+               Participants
+            </span>
             <div className="flex items-center gap-2">
-               <span className="text-[12px] tabular-nums text-muted">{PARTICIPANTS.length}</span>
+               <span className="text-[12px] tabular-nums text-muted">
+                  {PARTICIPANTS.length}
+               </span>
                <Tooltip>
                   <TooltipTrigger asChild>
                      <Button variant="ghost" size="icon-sm">

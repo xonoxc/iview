@@ -21,7 +21,9 @@ afterEach(() => {
 
 describe("requestJson", () => {
    it("performs a GET against /api/v1 and resolves with the envelope data", async () => {
-      const fetchMock = vi.fn().mockResolvedValue(jsonResponse({ success: true, data: { ok: 1 } }))
+      const fetchMock = vi
+         .fn()
+         .mockResolvedValue(jsonResponse({ success: true, data: { ok: 1 } }))
       vi.stubGlobal("fetch", fetchMock)
 
       const result = await requestJson("/rooms/abc")
@@ -32,7 +34,9 @@ describe("requestJson", () => {
    })
 
    it("passes the request init through", async () => {
-      const fetchMock = vi.fn().mockResolvedValue(jsonResponse({ success: true, data: null }))
+      const fetchMock = vi
+         .fn()
+         .mockResolvedValue(jsonResponse({ success: true, data: null }))
       vi.stubGlobal("fetch", fetchMock)
 
       await requestJson("/rooms", { method: "POST", body: "{}" })
@@ -55,7 +59,11 @@ describe("requestJson", () => {
    it("returns an http error for a non-ok response", async () => {
       vi.stubGlobal(
          "fetch",
-         vi.fn().mockResolvedValue(jsonResponse({ success: false, error: "room not found" }, 404))
+         vi
+            .fn()
+            .mockResolvedValue(
+               jsonResponse({ success: false, error: "room not found" }, 404)
+            )
       )
 
       const result = await requestJson("/rooms/missing")
@@ -71,7 +79,10 @@ describe("requestJson", () => {
    })
 
    it("returns a malformed error when the body is not JSON", async () => {
-      vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response("not json", { status: 200 })))
+      vi.stubGlobal(
+         "fetch",
+         vi.fn().mockResolvedValue(new Response("not json", { status: 200 }))
+      )
 
       const result = await requestJson("/rooms")
 
@@ -89,7 +100,10 @@ describe("requestJson", () => {
    })
 
    it("returns a malformed error when success is not true", async () => {
-      vi.stubGlobal("fetch", vi.fn().mockResolvedValue(jsonResponse({ success: false, data: {} })))
+      vi.stubGlobal(
+         "fetch",
+         vi.fn().mockResolvedValue(jsonResponse({ success: false, data: {} }))
+      )
 
       const result = await requestJson("/rooms")
 
@@ -113,7 +127,10 @@ describe("expect", () => {
 
       expect(result.isErr()).toBe(true)
       if (result.isErr()) {
-         expect(result.error).toMatchObject({ type: "malformed", message: "expected a number" })
+         expect(result.error).toMatchObject({
+            type: "malformed",
+            message: "expected a number",
+         })
       }
    })
 })

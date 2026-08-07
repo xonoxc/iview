@@ -13,7 +13,11 @@ export function CreateRoomForm() {
    return (
       <form onSubmit={onSubmit} noValidate>
          <Label htmlFor="create-room-title">Room title</Label>
-         <Input id="create-room-title" placeholder="e.g. Pair programming" {...register("title")} />
+         <Input
+            id="create-room-title"
+            placeholder="e.g. Pair programming"
+            {...register("title")}
+         />
          {titleError ? <p role="alert">{titleError.message}</p> : null}
          {error ? <p role="alert">{error}</p> : null}
          <Button type="submit" variant="primary" disabled={isSubmitting}>

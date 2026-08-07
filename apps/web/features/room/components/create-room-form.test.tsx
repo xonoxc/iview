@@ -59,11 +59,15 @@ describe("CreateRoomForm", () => {
       )
       render(<CreateRoomForm />)
 
-      expect(screen.getByRole("alert")).toHaveTextContent("Title must be at least 3 characters")
+      expect(screen.getByRole("alert")).toHaveTextContent(
+         "Title must be at least 3 characters"
+      )
    })
 
    it("renders application errors", () => {
-      screenMock.mockReturnValue(makeScreen({ error: "Could not reach the server. Try again." }))
+      screenMock.mockReturnValue(
+         makeScreen({ error: "Could not reach the server. Try again." })
+      )
       render(<CreateRoomForm />)
 
       expect(screen.getByRole("alert")).toHaveTextContent("Could not reach the server")

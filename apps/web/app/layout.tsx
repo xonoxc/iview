@@ -15,7 +15,8 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
    title: "iview — Collaborative coding",
-   description: "A realtime collaborative coding environment with integrated video calls.",
+   description:
+      "A realtime collaborative coding environment with integrated video calls.",
 }
 
 export default function RootLayout({

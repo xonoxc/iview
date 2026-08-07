@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 import { useEnterRoomScreen } from "@/features/room/hooks/screens/use-enter-room-screen"
 import { createQueryClient, createWrapper } from "@/features/room/test-utils"
 import type { RequestError } from "@/lib/http"
-import type { Room } from "@/features/room/types"
+import type { Room } from "@/features/room/types/room-types"
 
 const { routerPush, getRoomMock } = vi.hoisted(() => ({
    routerPush: vi.fn(),
@@ -71,7 +71,9 @@ describe("useEnterRoomScreen", () => {
    })
 
    it("maps a missing room to a field-facing error without navigating", async () => {
-      getRoomMock.mockResolvedValue(err({ type: "http", status: 404, message: "room not found" }))
+      getRoomMock.mockResolvedValue(
+         err({ type: "http", status: 404, message: "room not found" })
+      )
       const queryClient = createQueryClient()
       const { result } = renderHook(() => useEnterRoomScreen(), {
          wrapper: createWrapper(queryClient),

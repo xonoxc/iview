@@ -85,7 +85,9 @@ export function CodeEditor() {
                         <>
                            {tokenizeLine(line).map((token, tokenIndex) => (
                               <Fragment key={tokenIndex}>
-                                 <span className={TOKEN_CLASS[token.kind]}>{token.text}</span>
+                                 <span className={TOKEN_CLASS[token.kind]}>
+                                    {token.text}
+                                 </span>
                               </Fragment>
                            ))}
                         </>

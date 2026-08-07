@@ -6,7 +6,9 @@ import { IconCheck, IconChevronRight, IconCircleFilled } from "@tabler/icons-rea
 
 import { cn } from "@/lib/utils"
 
-function DropdownMenu({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
+function DropdownMenu({
+   ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
    return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />
 }
 
@@ -54,7 +56,8 @@ function DropdownMenuItem({
          className={cn(
             "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-[13px] outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-45",
             "data-[inset]:pl-8 focus:bg-surface-3 focus:text-foreground",
-            variant === "destructive" && "text-danger focus:bg-danger/15 focus:text-danger",
+            variant === "destructive" &&
+               "text-danger focus:bg-danger/15 focus:text-danger",
             className
          )}
          {...props}
@@ -131,11 +134,15 @@ function DropdownMenuShortcut({ className, ...props }: React.ComponentProps<"spa
    )
 }
 
-function DropdownMenuGroup({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Group>) {
+function DropdownMenuGroup({
+   ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Group>) {
    return <DropdownMenuPrimitive.Group data-slot="dropdown-menu-group" {...props} />
 }
 
-function DropdownMenuSub({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Sub>) {
+function DropdownMenuSub({
+   ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Sub>) {
    return <DropdownMenuPrimitive.Sub data-slot="dropdown-menu-sub" {...props} />
 }
 
@@ -182,7 +189,12 @@ function DropdownMenuSubContent({
 function DropdownMenuRadioGroup({
    ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.RadioGroup>) {
-   return <DropdownMenuPrimitive.RadioGroup data-slot="dropdown-menu-radio-group" {...props} />
+   return (
+      <DropdownMenuPrimitive.RadioGroup
+         data-slot="dropdown-menu-radio-group"
+         {...props}
+      />
+   )
 }
 
 function DropdownMenuRadioItem({
