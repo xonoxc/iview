@@ -11,9 +11,18 @@ class RealtimeClient {
    }
 
    connect(roomdId: string) {
-      this.socket = new WebSocket(this.url + "/api/v1/rooms/" + roomdId + "/ws")
+      if (!this.cannConnect) return
 
-      this.attachListeners()
+      this.status = "connecting"
+
+      const socket = new WebSocket(this.url + "/api/v1/rooms/" + roomdId + "/ws")
+      this.socket = socket
+
+      this.attachListeners(socket)
+   }
+
+   private get cannConnect() {
+      return !this.socket || this.socket.readyState === WebSocket.CLOSED
    }
 
    disconnect() {
@@ -21,17 +30,20 @@ class RealtimeClient {
       this.socket = null
    }
 
-   private attachListeners() {
-      if (!this.socket) return
+   private attachListeners(socket: WebSocket) {
+      socket.onopen = () => {
+         if (this.socket !== socket) return
+         this.status = "connected"
+      }
 
-      this.socket.onopen = () => (this.status = "connected")
-
-      this.socket.onclose = () => {
+      socket.onclose = () => {
+         if (this.socket !== socket) return
          this.status = "disconnected"
          this.socket = null
       }
 
-      this.socket.onerror = () => {
+      socket.onerror = () => {
+         if (this.socket !== socket) return
          console.error("WebSocket error:")
       }
    }
