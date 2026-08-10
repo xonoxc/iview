@@ -21,7 +21,7 @@ class RealtimeClient {
    connect(roomdId: string) {
       if (!this.cannConnect) return
 
-      this.status = "connecting"
+      this.setStatus("connecting")
 
       const socket = new WebSocket(this.url + "/api/v1/rooms/" + roomdId + "/ws")
       this.socket = socket
