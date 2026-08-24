@@ -27,6 +27,9 @@ func (r *Router) SetupRoutes() http.Handler {
 	mux.HandleFunc("POST /api/v1/rooms", r.handlers.RoomHandler.HandleCreateRoom)
 	mux.HandleFunc("GET /api/v1/rooms/{id}", r.handlers.RoomHandler.HandleGetRoom)
 
+	/*
+	 websocket route
+	*/
 	mux.HandleFunc(
 		"GET /rooms/{id}/ws",
 		r.handlers.RealtimeHandler.HandleConnect,
