@@ -54,10 +54,9 @@ function DropdownMenuItem({
          data-inset={inset}
          data-variant={variant}
          className={cn(
-            "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-[13px] outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-45",
-            "data-[inset]:pl-8 focus:bg-surface-3 focus:text-foreground",
-            variant === "destructive" &&
-               "text-danger focus:bg-danger/15 focus:text-danger",
+            "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-[13px] outline-none transition-colors data-disabled:pointer-events-none data-disabled:opacity-45",
+            "data-inset:pl-8 focus:bg-surface-3 focus:text-foreground",
+            variant === "destructive" && "text-danger focus:bg-danger/15",
             className
          )}
          {...props}
@@ -75,7 +74,7 @@ function DropdownMenuCheckboxItem({
       <DropdownMenuPrimitive.CheckboxItem
          data-slot="dropdown-menu-checkbox-item"
          className={cn(
-            "relative flex cursor-default select-none items-center gap-2 rounded-sm py-1.5 pl-8 pr-2 text-[13px] outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-45 focus:bg-surface-3 focus:text-foreground",
+            "relative flex cursor-default select-none items-center gap-2 rounded-sm py-1.5 pl-8 pr-2 text-[13px] outline-none transition-colors data-disabled:pointer-events-none data-disabled:opacity-45 focus:bg-surface-3 focus:text-foreground",
             className
          )}
          checked={checked}
@@ -103,7 +102,7 @@ function DropdownMenuLabel({
          data-slot="dropdown-menu-label"
          data-inset={inset}
          className={cn(
-            "px-2 py-1.5 text-[12px] font-medium text-muted-foreground data-[inset]:pl-8",
+            "px-2 py-1.5 text-[12px] font-medium text-muted-foreground data-inset:pl-8",
             className
          )}
          {...props}
@@ -159,7 +158,7 @@ function DropdownMenuSubTrigger({
          data-slot="dropdown-menu-sub-trigger"
          data-inset={inset}
          className={cn(
-            "flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-[13px] outline-none transition-colors focus:bg-surface-3 data-[state=open]:bg-surface-3 data-[inset]:pl-8",
+            "flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-[13px] outline-none transition-colors focus:bg-surface-3 data-inset:pl-8",
             className
          )}
          {...props}
@@ -206,7 +205,7 @@ function DropdownMenuRadioItem({
       <DropdownMenuPrimitive.RadioItem
          data-slot="dropdown-menu-radio-item"
          className={cn(
-            "relative flex cursor-default select-none items-center gap-2 rounded-sm py-1.5 pl-8 pr-2 text-[13px] outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-45 focus:bg-surface-3 focus:text-foreground",
+            "relative flex cursor-default select-none items-center gap-2 rounded-sm py-1.5 pl-8 pr-2 text-[13px] outline-none transition-colors data-disabled:pointer-events-none data-disabled:opacity-45 focus:bg-surface-3 focus:text-foreground",
             className
          )}
          {...props}

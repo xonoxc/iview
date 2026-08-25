@@ -31,7 +31,7 @@ function SelectTrigger({
          data-slot="select-trigger"
          data-size={size}
          className={cn(
-            "flex w-fit items-center justify-between gap-2 whitespace-nowrap rounded-md border border-border bg-transparent text-[13px] text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-45 data-[placeholder]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+            "flex w-fit items-center justify-between gap-2 whitespace-nowrap rounded-md border border-border bg-transparent text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:opacity-45 data-placeholder:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
             size === "default"
                ? "h-7 px-2"
                : "h-6 px-1.5 text-[12px] [&_svg:not([class*='size-'])]:size-3.5",
@@ -59,8 +59,7 @@ function SelectContent({
             data-slot="select-content"
             className={cn(
                "relative z-50 max-h-96 min-w-32 overflow-hidden rounded-md border border-border-strong bg-surface-2 text-foreground shadow-lg",
-               position === "popper" &&
-                  "data-[side=bottom]:translate-y-1 data-[side=top]:-translate-y-1",
+               position === "popper" && "data-[side=top]:-translate-y-1",
                className
             )}
             position={position}
@@ -73,7 +72,7 @@ function SelectContent({
                className={cn(
                   "p-1",
                   position === "popper" &&
-                     "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)] scroll-my-1"
+                     "h-(--radix-select-trigger-height) w-full min-w-(--radix-select-trigger-width) scroll-my-1"
                )}
             >
                {children}
@@ -111,7 +110,7 @@ function SelectItem({
       <SelectPrimitive.Item
          data-slot="select-item"
          className={cn(
-            "relative flex w-full cursor-default select-none items-center gap-2 rounded-sm py-1.5 pl-2 pr-8 text-[13px] outline-none transition-colors focus:bg-surface-3 data-[disabled]:pointer-events-none data-[disabled]:opacity-45",
+            "relative flex w-full cursor-default select-none items-center gap-2 rounded-sm py-1.5 pl-2 pr-8 text-[13px] outline-none transition-colors focus:bg-surface-3 data-disabled:pointer-events-none data-disabled:opacity-45",
             className
          )}
          {...props}
