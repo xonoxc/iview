@@ -42,7 +42,11 @@ import {
    WorkspaceModeSwitch,
    type WorkspaceMode,
 } from "@/components/meeting/workspace-mode-switch"
-import { participants as mockParticipants, type ConnectionState, type Participant } from "@/lib/mock-data"
+import {
+   participants as mockParticipants,
+   type ConnectionState,
+   type Participant,
+} from "@/lib/mock-data"
 import { realtimeClient } from "@/lib/realtime-client"
 import { useEnterRoom } from "@/features/room/hooks/use-enter-room"
 import { cn } from "@/lib/utils"
@@ -134,12 +138,17 @@ export function MeetingRoom({ roomId }: { roomId: string }) {
                <BreadcrumbList className="flex-nowrap gap-1.5 sm:gap-2">
                   <BreadcrumbItem className="shrink-0">
                      <BreadcrumbLink asChild>
-                        <Link href="/" className="text-sm font-semibold tracking-tight text-foreground hover:text-primary">
+                        <Link
+                           href="/"
+                           className="text-sm font-semibold tracking-tight text-foreground hover:text-primary"
+                        >
                            Relay
                         </Link>
                      </BreadcrumbLink>
                   </BreadcrumbItem>
-                  <BreadcrumbSeparator className="shrink-0 text-muted-foreground/50">/</BreadcrumbSeparator>
+                  <BreadcrumbSeparator className="shrink-0 text-muted-foreground/50">
+                     /
+                  </BreadcrumbSeparator>
                   <BreadcrumbItem className="hidden shrink-0 sm:flex">
                      <BreadcrumbLink asChild>
                         <Link href="/" className="text-sm">
@@ -147,9 +156,13 @@ export function MeetingRoom({ roomId }: { roomId: string }) {
                         </Link>
                      </BreadcrumbLink>
                   </BreadcrumbItem>
-                  <BreadcrumbSeparator className="hidden shrink-0 text-muted-foreground/50 sm:flex">/</BreadcrumbSeparator>
+                  <BreadcrumbSeparator className="hidden shrink-0 text-muted-foreground/50 sm:flex">
+                     /
+                  </BreadcrumbSeparator>
                   <BreadcrumbItem className="min-w-0">
-                     <BreadcrumbPage className="truncate text-sm font-medium">{title}</BreadcrumbPage>
+                     <BreadcrumbPage className="truncate text-sm font-medium">
+                        {title}
+                     </BreadcrumbPage>
                   </BreadcrumbItem>
                   <span className="hidden shrink-0 rounded-md border border-border px-1.5 py-0.5 text-[11px] text-muted-foreground md:inline">
                      {roomId}
@@ -175,7 +188,9 @@ export function MeetingRoom({ roomId }: { roomId: string }) {
                >
                   <IconCommand className="h-3.5 w-3.5" />
                   Commands
-                  <kbd className="rounded border border-border px-1 text-[10px] leading-4">⌥K</kbd>
+                  <kbd className="rounded border border-border px-1 text-[10px] leading-4">
+                     ⌥K
+                  </kbd>
                </Button>
 
                <Button
@@ -269,7 +284,11 @@ export function MeetingRoom({ roomId }: { roomId: string }) {
                         <VideoRail participants={people} />
                      </div>
                      <div className="hidden min-h-0 w-[280px] shrink-0 flex-col border-r border-border bg-sidebar/40 p-4 lg:flex xl:w-[320px]">
-                        <VideoGrid participants={people} screenSharing={sharing} layout="column" />
+                        <VideoGrid
+                           participants={people}
+                           screenSharing={sharing}
+                           layout="column"
+                        />
                      </div>
                      <div className="min-h-0 flex-1">
                         <CodeWorkspace
@@ -321,7 +340,7 @@ export function MeetingRoom({ roomId }: { roomId: string }) {
             <aside
                className={cn(
                   "hidden shrink-0 overflow-hidden border-l border-border bg-sidebar transition-[width] duration-200 ease-out lg:block",
-                  sidebarOpen ? "w-[300px] xl:w-[320px]" : "w-0",
+                  sidebarOpen ? "w-[300px] xl:w-[320px]" : "w-0"
                )}
                aria-hidden={!sidebarOpen}
             >
@@ -331,7 +350,10 @@ export function MeetingRoom({ roomId }: { roomId: string }) {
             </aside>
 
             <Sheet open={mobilePanel} onOpenChange={setMobilePanel}>
-               <SheetContent side="right" className="w-[88vw] max-w-sm border-border bg-sidebar p-0 lg:hidden">
+               <SheetContent
+                  side="right"
+                  className="w-[88vw] max-w-sm border-border bg-sidebar p-0 lg:hidden"
+               >
                   <SheetTitle className="sr-only">Session panel</SheetTitle>
                   <MeetingSidebar participants={people} tab={tab} onTabChange={setTab} />
                </SheetContent>
