@@ -34,18 +34,22 @@ func (rsi *RoomHandler) HandleCreateRoom(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	roomId, err := rsi.roomService.CreateRoom(r.Context(), &domain.Room{
-		Title: req.Title,
-	})
+	roomId, err := rsi.roomService.CreateRoom(
+		r.Context(), &domain.Room{
+			Title: req.Title,
+		},
+	)
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to create room")
 		return
 	}
 
-	writeJSON(w, http.StatusCreated, map[string]string{
-		"room_id": roomId,
-		"message": "room created",
-	})
+	writeJSON(w,
+		http.StatusCreated, map[string]string{
+			"room_id": roomId,
+			"message": "room created",
+		},
+	)
 }
 
 func (rsi *RoomHandler) HandleGetRoom(w http.ResponseWriter, r *http.Request) {
