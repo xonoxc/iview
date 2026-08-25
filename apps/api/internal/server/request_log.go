@@ -1,7 +1,10 @@
 package server
 
 import (
+	"bufio"
+	"fmt"
 	"log/slog"
+	"net"
 	"net/http"
 	"time"
 )
@@ -25,6 +28,14 @@ func (r *statusRecorder) Write(b []byte) (int, error) {
 
 func (r *statusRecorder) Unwrap() http.ResponseWriter {
 	return r.ResponseWriter
+}
+
+func (r *statusRecorder) Hijack() (net.Conn, *bufio.ReadWriter, error) {
+	hijacker, ok := r.ResponseWriter.(http.Hijacker)
+	if !ok {
+		return nil, nil, fmt.Errorf("upstream ResponseWriter does not implement http.Hijacker")
+	}
+	return hijacker.Hijack()
 }
 
 func withRequestLogging(next http.Handler) http.Handler {

@@ -34,9 +34,10 @@ func (hub *Hub) Register(client *Client) {
 
 	session, exists := hub.sessions[client.RoomId]
 	if !exists {
-		hub.sessions[client.RoomId] = NewSession(
+		session = NewSession(
 			client.RoomId,
 		)
+		hub.sessions[client.RoomId] = session
 	}
 
 	session.AddClient(client)

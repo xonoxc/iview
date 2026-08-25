@@ -126,7 +126,7 @@ function ChatRow({ m }: { m: ChatMessage }) {
                {m.author}
             </span>
             <span className="text-muted-foreground">: </span>
-            <span className="break-words text-foreground/90">
+            <span className="wrap-break-word text-foreground/90">
                {renderBody(m.body, colorVar)}
             </span>
          </p>
@@ -176,11 +176,11 @@ function ChatRow({ m }: { m: ChatMessage }) {
 
 function VoiceBars() {
    return (
-      <span className="flex h-3.5 items-center gap-[2px]" aria-label="Speaking">
+      <span className="flex h-3.5 items-center gap-0.5" aria-label="Speaking">
          {[0, 120, 240].map(d => (
             <span
                key={d}
-               className="voice-bar block h-3 w-[2px] rounded-full bg-success"
+               className="voice-bar block h-3 w-0.5 rounded-full bg-success"
                style={{ animationDelay: `${d}ms` }}
             />
          ))}
@@ -196,7 +196,7 @@ function ParticipantRow({ p }: { p: Participant }) {
          className={cn(
             "group relative flex items-center gap-3 rounded-lg border border-transparent px-2.5 py-2 transition-colors",
             "hover:border-border hover:bg-accent/60",
-            p.speaking && "border-success/25 bg-success/[0.06]"
+            p.speaking && "border-success/25 bg-success/6"
          )}
       >
          <div className="relative shrink-0">
@@ -308,7 +308,7 @@ export function MeetingSidebar({
       <Tabs
          value={tab}
          onValueChange={onTabChange}
-         className="flex h-full flex-col gap-0"
+         className="flex h-full flex-col gap-0 p-4"
       >
          <div className="border-b border-border p-3">
             <TabsList className="grid h-8 w-full grid-cols-2 gap-1 rounded-md border border-border bg-background p-1">

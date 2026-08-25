@@ -110,6 +110,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4.3.3
         version: 4.3.3
+      '@tailwindcss/vite':
+        specifier: ^4.3.3
+        version: 4.3.3(vite@8.2.0(@types/node@22.15.3)(jiti@2.7.0))
       '@tanstack/react-query':
         specifier: ^5.101.4
         version: 5.101.4(react@19.2.0)
@@ -1539,6 +1542,11 @@ packages:
 
   '@tailwindcss/postcss@4.3.3':
     resolution: {integrity: sha512-JTSZZGQi1AyKirbLN3azmjVzef92tcX7h+iSqPdaeStyFpGpDlKvvpxeOE8njhbUanbRwr3z8DyzhICWnMtQeg==}
+
+  '@tailwindcss/vite@4.3.3':
+    resolution: {integrity: sha512-yYU8cogLeSh/ms2jh8Fj7jaba/EWa7Ja6GoUqYZaraEuCI5YS6ms6ObZgjjedm+jm6XZjdNRWBpPP6Z86oOxcw==}
+    peerDependencies:
+      vite: ^5.2.0 || ^6 || ^7 || ^8
 
   '@tanstack/query-core@5.101.4':
     resolution: {integrity: sha512-gNwcvOJcRbLWPOLG/2OBm+zM+Yv+MKsXKEOWC57USuZDEsI71hEErQsiEGx5wX9rzWWkfwM0fVSPoiIFSsxfiw==}
@@ -4507,6 +4515,13 @@ snapshots:
       '@tailwindcss/oxide': 4.3.3
       postcss: 8.5.25
       tailwindcss: 4.3.3
+
+  '@tailwindcss/vite@4.3.3(vite@8.2.0(@types/node@22.15.3)(jiti@2.7.0))':
+    dependencies:
+      '@tailwindcss/node': 4.3.3
+      '@tailwindcss/oxide': 4.3.3
+      tailwindcss: 4.3.3
+      vite: 8.2.0(@types/node@22.15.3)(jiti@2.7.0)
 
   '@tanstack/query-core@5.101.4': {}
 

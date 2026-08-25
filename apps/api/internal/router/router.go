@@ -31,7 +31,7 @@ func (r *Router) SetupRoutes() http.Handler {
 	 websocket route
 	*/
 	mux.HandleFunc(
-		"GET /rooms/{id}/ws",
+		"GET /api/v1/rooms/{id}/ws",
 		r.handlers.RealtimeHandler.HandleConnect,
 	)
 
